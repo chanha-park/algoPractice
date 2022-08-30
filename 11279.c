@@ -7,7 +7,7 @@ void	push_heap(int *heap, int x, int *size)
 
 	*size += 1;
 	idx = *size;
-	while (idx > 1 && heap[idx / 2] > x)
+	while (idx > 1 && heap[idx / 2] < x)
 	{
 		heap[idx] = heap[idx / 2];
 		idx /= 2;
@@ -29,9 +29,9 @@ void	pop_heap(int *heap, int *size)
 		*size -= 1;
 		while (child <= *size)
 		{
-			if (child < *size && heap[child] > heap[child + 1])
+			if (child < *size && heap[child] < heap[child + 1])
 				child++;
-			if (temp <= heap[child])
+			if (temp >= heap[child])
 				break ;
 			heap[parent] = heap[child];
 			parent = child;
