@@ -1,31 +1,62 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
-int	dfs(int **mat, int *visit, int n, int i, int j, int len)
+typedef struct
 {
-	if (len != 0 && i == j)
-		return (1);
-	for (int index = 0; index < n; index++)
-	{
-		if (mat[i][index] == 1 && visit[index] == 0)
-		{
-			visit[index] = 1;
-			if (dfs(mat, visit, n, index, j, len + 1))
-				return (1);
-		}
-	}
-	return (0);
+	int	arr[10000];
+	int	head;
+	int	tail;
+}	t_que;
+
+void	enque(t_que *que, int n)
+{
+	que->arr[que->tail] = n;
+	que->tail = (que->tail + 1) % 10000;
 }
 
-int	check(int **mat, int n, int i, int j)
+int	deque(t_que *que)
 {
-	int	*visit = calloc(n, sizeof(int));
-	int	flag;
-	int	len = 0;
+	int	ret = que->arr[que->head];
+	que->head = (que->head + 1) % 10000;
+	return (ret);
+}
 
-	flag = dfs(mat, visit, n, i, j, len);
-	free(visit);
-	return (flag);
+void	update(int **mat, int n, t_que *que, int tmp)
+{
+	int	flag = 0;
+
+	for (int i = 0; i < n; i++)
+	{
+		if (mat[tmp][i] == 1)
+		{
+			for (int j = 0; j < n; j++)
+			{
+				if (mat[tmp][j] == 0 && mat[i][j] == 1)
+				{
+					flag = 1;
+					mat[tmp][j] = 1;
+				}
+			}
+		}
+	}
+	if (flag)
+		enque(que, tmp);
+}
+
+void	check(int **mat, int n)
+{
+	t_que	que;
+	int		tmp;
+
+	memset(&que, 0, sizeof(t_que));
+	for (int i = 0; i < n; i++)
+		enque(&que, i);
+	while (que.head != que.tail)
+	{
+		tmp = deque(&que);
+		update(mat, n, &que, tmp);
+	}
 }
 
 int	main(void)
@@ -41,11 +72,11 @@ int	main(void)
 		for (int j = 0; j < n; j++)
 			scanf("%d", &mat[i][j]);
 	}
-	/* printf("=====\n"); */
+	check(mat, n);
 	for (int i = 0; i < n; i++)
 	{
 		for (int j = 0; j < n; j++)
-			printf("%d ", check(mat, n, i, j));
+			printf("%d ", mat[i][j]);
 		printf("\n");
 	}
 	return (0);
