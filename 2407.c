@@ -8,7 +8,7 @@ typedef struct strInt
 	int		len;
 }	strInt;
 
-strInt	arr[101][51];
+strInt	arr[101][101];
 
 strInt	initStrInt(int nbr)
 {
