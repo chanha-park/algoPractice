@@ -2,95 +2,84 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-void	r(int *arr, int n)
+void	print_(int *begin, int *end, int sign)
 {
-	int	i = 0;
-	int	j = n - 1;
-	int	tmp;
-
-	while (i < j)
+	if (sign > 0)
 	{
-		tmp = arr[i];
-		arr[i] = arr[j];
-		arr[j] = tmp;
-		i++;
-		j--;
+		printf("[");
+		while (begin <= end)
+		{
+			printf("%d", *begin);
+			begin++;
+			if (begin <= end)
+				printf(",");
+		}
+		printf("]\n");
 	}
-}
-
-void	print_(int *arr, int n)
-{
-	if (arr == NULL)
-		printf("error\n");
 	else
 	{
 		printf("[");
-		for (int i = 0; i < n; i++)
+		while (begin >= end)
 		{
-			if (i == 0)
-				printf("%d", arr[i]);
-			else
-				printf(",%d", arr[i]);
+			printf("%d", *begin);
+			begin--;
+			if (begin >= end)
+				printf(",");
 		}
 		printf("]\n");
 	}
 }
 
-void	operate(int *arr, int n, char *p)
+void	operate(int *begin, int *end, int sign, char *cmd)
 {
-	int	flag = 0;
-
-	while (*p)
+	if (*cmd)
 	{
-		if (*p == 'D')
+		if (*cmd == 'R')
 		{
-			if (n == 0)
-			{
-				print_(NULL, n);
-				return ;
-			}
-			if (flag % 2)
-				r(arr, n);
-			arr++;
-			n--;
-			flag = 0;
+			sign *= -1;
+			operate(end, begin, sign, cmd + 1);
 		}
 		else
-			flag++;
-		p++;
+		{
+			if (sign > 0 && begin > end)
+				printf("error\n");
+			else if (sign < 0 && begin < end)
+				printf("error\n");
+			else
+				operate(begin + sign, end, sign, cmd + 1);
+		}
 	}
-	if (flag % 2)
-		r(arr, n);
-	print_(arr, n);
+	else
+	{
+		print_(begin, end, sign);
+	}
 }
 
 void	test(void)
 {
 	int		n;
 	char	p[100001] = {0};
-	char	c = '\0';
 	int		*arr;
-	int		curr = 0;
-	int		idx = 0;
 
 	scanf("%s", p);
-	getchar();
+	/* getchar(); */
 	scanf("%d", &n);
 	getchar();
 	arr = malloc(sizeof(int) * n);
-	while (read(0, &c, 1) && c != '\n')
+	if (n > 0)
 	{
-		if (c >= '0' && c <= '9')
-			curr = curr * 10 + c - '0';
-		else if (c == ',')
+		for (int i = 0; i < n; i++)
 		{
-			arr[idx++] = curr;
-			curr = 0;
+			if (i)
+				scanf(",%d", &arr[i]);
+			else
+				scanf("[%d", &arr[i]);
 		}
 	}
-	if (n)
-		arr[idx] = curr;
-	operate(arr, n, p);
+	else
+		scanf("[");
+	getchar();
+	operate(arr, arr + n - 1, 1, p);
 	free(arr);
 }
 
