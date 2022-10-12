@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 char	map[10000][10000];
@@ -28,14 +29,12 @@ int	comp(const void *a, const void *b)
 
 void	dfs(int curr, int n)
 {
+	visited[curr] = 1;
+	count++;
 	for (int i = 0; i < n; i++)
 	{
 		if (visited[i] == 0 && map[i][curr])
-		{
-			visited[i] = 1;
-			count++;
 			dfs(i, n);
-		}
 	}
 }
 
@@ -51,7 +50,7 @@ int	main(void)
 	}
 	for (int i = 0; i < n; i++)
 	{
-		count = 1;
+		count = 0;
 		dfs(i, n);
 		if (count > max)
 		{
@@ -63,8 +62,7 @@ int	main(void)
 		{
 			result[idx++] = i + 1;
 		}
-		for (int j = 0; j < n; j++)
-			visited[j] = 0;
+		memset(visited, 0, n * sizeof(char));
 	}
 	for (int i = 0; i < idx; i++)
 		printf("%d ", result[i]);
