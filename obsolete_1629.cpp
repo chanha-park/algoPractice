@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <map>
+#include <vector>
 
 namespace myStd {
 
@@ -13,9 +14,31 @@ class map : public std::map<int, int> {
       it->second += 1;
   }
 };
+
+struct Pair {
+  int p;
+  int order;
+  int remainder;
+
+  Pair(void) : p(0), order(0), remainder(0) {}
+  Pair(int p, int order, int remainder)
+      : p(p), order(order), remainder(remainder) {}
+};
+
+int pow(int base, int exp) {
+  int ret = 1;
+
+  while (exp > 0) {
+    ret *= base;
+    exp--;
+  }
+  return (ret);
+}
+
 }  // namespace myStd
 
 myStd::map factor;
+std::vector<Pair> crt;
 
 // int is_prime(int n) {
 //   if (factor.find(n) != factor.end())
@@ -83,6 +106,22 @@ void factorize(int n) {
   factor.insert(std::make_pair(n, 1));
 }
 
+void get_crt(int a, int b, int p, int order) {
+  if (a % p == 0) {
+    if (b >= order)
+      crt.push_back(Pair(p, order, 0));
+    else
+      crt.push_back(Pair(p, order, myStd::pow(p, )));
+  }
+  else {
+	  int	k = myStd::pow(p, order);
+	  int	tot = (p - 1) * (k / p);
+	  b %= tot;
+	  a %= k;
+	  crt.push_back(Pair(p, order, myStd::pow(a, b) % k));
+  }
+}
+
 int main(void) {
   int a, b, c;
 
@@ -90,6 +129,13 @@ int main(void) {
 
   printf("c: %d\n", c);
   factorize(c);
+
+  a %= c;
+
+  for (std::map<int, int>::iterator it = factor.begin(); it != factor.end();
+       ++it) {
+    get_crt(a, b, it->first, it->second);
+  }
 
   // for (std::map<int, int>::iterator it = factor.begin(); it != factor.end();
   //      ++it) {
