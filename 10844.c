@@ -1,45 +1,42 @@
 #include <stdio.h>
 
-int	ft_whole(int n)
-{
-	int	s;
+#define MOD 1000000000
 
-	s = 1;
-	while (n-- > -2)
-	{
-		s = s << 1;
-		if (s >= 1000000000)
-			s -= 1000000000;
-	}
-	return (s + 2);
+int dp[101][10];
+
+int stairNum_k(int n, int k) {
+  if (dp[n][k])
+    return (dp[n][k]);
+
+  if (n == 1) {
+    dp[n][k] = 1;
+  } else {
+    int total = 0;
+
+    if (k > 0)
+      total += stairNum_k(n - 1, k - 1);
+    if (k < 9)
+      total += stairNum_k(n - 1, k + 1);
+    total %= MOD;
+    dp[n][k] = total;
+  }
+  return (dp[n][k]);
 }
 
-int	ft_comb(int n, int a, int b)
-{
-	int	num;
+int stairNum(int n) {
+  int total = 0;
 
-	if (n == 1)
-		return (b);
-	num = 2 * b + 4 * (n - 1) * a;
-	num /= (n + 1);
-	return (ft_comb(n - 1, b, num));
+  for (int i = 1; i < 10; i++) {
+    total += stairNum_k(n, i);
+    total %= MOD;
+  }
+  return (total);
 }
 
-int	ft_part(int n)
-{
-	return (ft_comb(n, 1, 1));
-}
+int main(void) {
+  int n;
 
-int	ft_stair(int n)
-{
-	return (ft_whole(n) - ft_part(n - 1));
-}
-
-int	main(void)
-{
-	int	n;
-
-	scanf("%d", &n);
-	printf("%d", ft_stair(n));
-	return (0);
+  scanf("%d", &n);
+  printf("%d\n", stairNum(n));
+  return (0);
 }
