@@ -1,5 +1,6 @@
 #include <iostream>
-#include <set>
+#include <queue>
+#include <vector>
 
 int main(void) {
   std::ios::sync_with_stdio(0);
@@ -7,8 +8,8 @@ int main(void) {
   std::cout.tie(0);
 
   int n, tmp;
-  std::multiset<int> a;
-  std::multiset<int> b;
+  std::priority_queue<int, std::vector<int>, std::less<int> > a;
+  std::priority_queue<int, std::vector<int>, std::greater<int> > b;
 
   std::cin >> n;
 
@@ -16,24 +17,24 @@ int main(void) {
     std::cin >> tmp;
 
     if (a.size() == b.size()) {
-      if (b.size() > 0 && tmp > *b.begin()) {
-        a.insert(*b.begin());
-        b.erase(b.begin());
-        b.insert(tmp);
+      if (b.size() > 0 && tmp > b.top()) {
+        a.push(b.top());
+        b.pop();
+        b.push(tmp);
       } else {
-        a.insert(tmp);
+        a.push(tmp);
       }
     } else {
-      if (tmp < *a.rbegin()) {
-        b.insert(*a.rbegin());
-        a.erase(--a.end());
-        a.insert(tmp);
+      if (tmp < a.top()) {
+        b.push(a.top());
+        a.pop();
+        a.push(tmp);
       } else {
-        b.insert(tmp);
+        b.push(tmp);
       }
     }
 
-    std::cout << *a.rbegin() << "\n";
+    std::cout << a.top() << "\n";
   }
 
   return (0);
