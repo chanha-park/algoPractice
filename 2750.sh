@@ -1,5 +1,12 @@
 #!/bin/bash
 
+declare -i idxA
+declare -i idxB
+declare -i lenA
+declare -i lenB
+declare -i next
+declare -i mid
+
 function merge() {
 	c=()
 
@@ -20,23 +27,23 @@ function merge() {
 		if [ ${a[$idxA]} -gt ${b[$idxB]} ]
 		then
 			c+=(${b[$idxB]})
-			idxB=$(( $idxB + 1 ))
+			idxB+=1
 		else
 			c+=(${a[$idxA]})
-			idxA=$(( $idxA + 1 ))
+			idxA+=1
 		fi
 	done
 
 	while [ $idxA -lt $lenA ]
 	do
 		c+=(${a[$idxA]})
-		idxA=$(( $idxA + 1 ))
+		idxA+=1
 	done
 
 	while [ $idxB -lt $lenB ]
 	do
 		c+=(${b[$idxB]})
-		idxB=$(( $idxB + 1 ))
+		idxB+=1
 	done
 
 	echo ${c[@]}
@@ -48,6 +55,14 @@ function mySort() {
 	if [ "$len" -le 1 ]
 	then
 		echo ${a[@]}
+	elif [ "$len" -eq 2 ]
+	then
+		if [ ${a[0]} -gt ${a[1]} ]
+		then
+			echo ${a[1]} ${a[0]}
+		else
+			echo ${a[0]} ${a[1]}
+		fi
 	else
 		mid=$(( $(( $len + 1 )) /  2 ))
 		half1=(${a[@]:0:$mid})
