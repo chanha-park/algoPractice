@@ -1,31 +1,39 @@
+#include <algorithm>
+#include <cstring>
+#include <deque>
 #include <iostream>
-#include <queue>
-#include <string>
+
+struct PhoneN {
+  char nbr[11];
+};
+
+bool cmp(const PhoneN& a, const PhoneN& b) {
+  return (std::strcmp(a.nbr, b.nbr) < 0);
+}
 
 void testcase(void) {
   int n;
-  std::string phoneNumber;
-  std::string prev;
-  std::string curr;
-  std::priority_queue<std::string, std::vector<std::string>,
-                      std::greater<std::string> >
-      q;
+  PhoneN phoneNumber;
+  PhoneN prev;
+  PhoneN curr;
+  std::deque<PhoneN> q;
 
   std::cin >> n;
   for (int i = 0; i < n; ++i) {
-    std::cin >> phoneNumber;
-    q.push(phoneNumber);
+    std::cin >> phoneNumber.nbr;
+    q.push_back(phoneNumber);
   }
 
+  std::sort(q.begin(), q.end(), cmp);
   while (!q.empty()) {
-    prev = q.top();
-    q.pop();
+    prev = q.front();
+    q.pop_front();
     if (!q.empty()) {
-      curr = q.top();
+      curr = q.front();
       int i = 0;
-      while (prev[i] && prev[i] == curr[i])
+      while (prev.nbr[i] && prev.nbr[i] == curr.nbr[i])
         ++i;
-      if (prev[i] == '\0') {
+      if (prev.nbr[i] == '\0') {
         std::cout << "NO\n";
         return;
       }
