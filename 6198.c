@@ -2,20 +2,22 @@
 
 int stack[80000];
 int size;
-long long sum;
+long sum;
 
 int main(void) {
-  int n, h;
+  int n, h, i;
 
   scanf("%d", &n);
-  for (int i = 0; i < n; ++i) {
+  i = 0;
+  while (i < n) {
     scanf("%d", &h);
     while (size > 0 && stack[size - 1] <= h)
       --size;
     stack[size++] = h;
     sum += size - 1;
+    ++i;
   }
 
-  printf("%lld\n", sum);
+  printf("%ld\n", sum);
   return (0);
 }
