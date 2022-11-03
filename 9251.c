@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-// longest common sequence, lcs, LCS
+/* longest common sequence, lcs, LCS */
 
 char s1[1001];
 char s2[1001];
@@ -11,8 +11,8 @@ int max(int a, int b) {
 }
 
 int main(void) {
-  scanf("%s\n%s", s1, s2);
   int a, b;
+  scanf("%s\n%s", s1, s2);
   for (a = 1; s1[a - 1]; ++a) {
     for (b = 1; s2[b - 1]; ++b) {
       if (s1[a - 1] == s2[b - 1])
