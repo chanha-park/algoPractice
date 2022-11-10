@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-int primeArr[500000];
-long long sumArr[500000];
+int primeArr[300000];
+long long sumArr[300000];
 int primeCnt;
 int n;
 
@@ -16,7 +16,7 @@ int isPrime(int k) {
 void setArr(void) {
   primeArr[primeCnt++] = 2;
   sumArr[primeCnt] = 2;
-  for (int i = 3; i <= n; ++i) {
+  for (int i = 3; i <= n; i += 2) {
     if (isPrime(i)) {
       primeArr[primeCnt++] = i;
       sumArr[primeCnt] = i + sumArr[primeCnt - 1];
