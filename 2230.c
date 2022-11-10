@@ -1,30 +1,53 @@
 #include <stdio.h>
-#include <stdlib.h>
-
-int cmp(const void* a, const void* b) {
-  int x = *(int*)a;
-  int y = *(int*)b;
-
-  if (x > y)
-    return (1);
-  if (x < y)
-    return (-1);
-  return (0);
-}
 
 int arr[100000];
 
+/* quicsort implementation */
+int partition(int start, int end) {
+  int piv, left, right, tmp;
+
+  piv = arr[(start + end) / 2];
+  left = start;
+  right = end - 1;
+  while (1) {
+    while (arr[left] < piv)
+      ++left;
+    while (arr[right] > piv)
+      --right;
+    if (left >= right)
+      return (right);
+    if (arr[left] == arr[right])
+      ++left;
+    else {
+      tmp = arr[left];
+      arr[left] = arr[right];
+      arr[right] = tmp;
+    }
+  }
+}
+
+void sort(int start, int end) {
+  int mid;
+
+  if (start + 1 >= end)
+    return;
+  mid = partition(start, end);
+  sort(start, mid);
+  sort(mid + 1, end);
+}
+
 int main(void) {
-  int n, m;
+  int n, m, left, right, min, i;
+
   scanf("%d %d", &n, &m);
-  for (int i = 0; i < n; ++i) {
+  for (i = 0; i < n; ++i) {
     scanf("%d", &arr[i]);
   }
-  qsort(arr, n, sizeof(int), cmp);
+  sort(0, n);
 
-  int left = 0;
-  int right = 0;
-  int min = 2000000000;
+  left = 0;
+  right = 0;
+  min = 2000000000;
   while (right < n && left <= right) {
     if (arr[right] - arr[left] < m) {
       ++right;
