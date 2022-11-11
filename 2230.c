@@ -2,7 +2,7 @@
 
 int arr[100000];
 
-/* quicsort implementation */
+/* quicksort implementation */
 int partition(int start, int end) {
   int piv, left, right, tmp;
 
