@@ -1,10 +1,10 @@
 {-# OPTIONS_GHC -Wall -Wextra -Werror #-}
 
 main :: IO ()
-main = print . sum . takeWhile (< 4000000) . filter even $ fibo
+main = print . sum . takeWhile (< 4000000) $ evenFibo
 
-fibo :: [Int]
-fibo = fibo' 1 2
+evenFibo :: [Int]
+evenFibo = evenFibo' 2 8
 
-fibo' :: Num t => t -> t -> [t]
-fibo' x y = x : fibo' y (x + y)
+evenFibo' :: Num t => t -> t -> [t]
+evenFibo' x y = x : evenFibo' y (x + 4 * y)
