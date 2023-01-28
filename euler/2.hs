@@ -3,7 +3,7 @@
 main :: IO ()
 main = print . sum . takeWhile (< 4000000) . filter even $ fibo
 
-fibo :: [Integer]
+fibo :: [Int]
 fibo = fibo' 1 2
 
 fibo' :: Num t => t -> t -> [t]
