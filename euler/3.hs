@@ -16,4 +16,5 @@ maxFactor n p
     | k == n = n
     | k == p = maxFactor (div n p) p
     | otherwise = maxFactor n (p + 1)
-        where k = minFactor n p
+  where
+    k = minFactor n p

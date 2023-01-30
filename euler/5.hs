@@ -10,9 +10,9 @@ rangeLCM n = evalFactor . map (countOrder n) . primesLE $ n
 
 evalFactor :: [(Int, Int)] -> Int
 evalFactor = foldr fn 1
-    where
-        fn :: (Int, Int) -> Int -> Int
-        fn = (*) . (($) (uncurry (^)))
+  where
+    fn :: (Int, Int) -> Int -> Int
+    fn = (*) . ($) uncurry (^)
 
 countOrder :: Int -> Int -> (Int, Int)
 countOrder n p
@@ -20,7 +20,7 @@ countOrder n p
     | otherwise = (p, (+ 1) . snd . countOrder (div n p) $ p)
 
 primesLE :: Int -> [Int]
-primesLE n = sieve [2..n]
+primesLE n = sieve [2 .. n]
 
 sieve :: [Int] -> [Int]
 sieve [] = []
