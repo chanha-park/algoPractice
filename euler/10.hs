@@ -3,10 +3,10 @@
 import Data.Map
 
 main :: IO ()
-main = print (primes !! 10000)
+main = print . sum $ primes
 
-primes :: [Integer]
-primes = sieve [2 ..]
+primes :: [Int]
+primes = sieve [2 .. 2000000]
   where
     sieve xs = sieve' xs Data.Map.empty
     sieve' [] _ = []
