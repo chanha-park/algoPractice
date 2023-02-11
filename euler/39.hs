@@ -1,16 +1,32 @@
 {-# OPTIONS_GHC -Wall -Wextra -Werror #-}
 
-main :: IO ()
-main = print . maximum . map (\x -> (countCase x, x)) $ [1 .. (1000 :: Int)]
+import Data.List
 
-countCase :: Integral c => c -> Int
-countCase n
-    | odd n = 0
+main :: IO ()
+main =
+    print
+        . maximum
+        . map (\x -> (length . findCase $ x, x))
+        . enumFromTo 1
+        . (`quot` 2)
+        $ (1000 :: Int)
+
+findCase :: Integral a => a -> [[a]]
+findCase p
+    | odd p = []
     | otherwise =
-        length
-            [ (a, b, c)
-            | a <- [1 .. (div n 3)]
-            , b <- [a + 1 .. (div n 2)]
-            , let c = n - a - b
-            , a * a + b * b == c * c
+        map head . group . sort $
+            [ if a < b then [a, b, c] else [b, a, c]
+            | k <- divisors p
+            , let p' = div p k
+            , m <- divisors p'
+            , m * m < p'
+            , 2 * m * m > p'
+            , let n = div p' m - m
+            , let a = k * (m * m - n * n)
+            , let b = k * (2 * m * n)
+            , let c = p - a - b
             ]
+
+divisors :: Integral b => b -> [b]
+divisors n = filter ((== 0) . rem n) [1 .. n] -- can be improved
