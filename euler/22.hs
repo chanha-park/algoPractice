@@ -5,7 +5,7 @@ import Data.List
 
 main :: IO ()
 main = do
-    content <- readFile "names.txt"
+    content <- readFile "p022_names.txt"
     print
         . sum
         . map (uncurry (*))
