@@ -1,28 +1,21 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
 
-int	count = 0;
+int
+main(void) {
+  int n, k;
+  int arr[100];
+  int dp[10001];
+  int i, j;
 
-void	f(int n, int *arr, int idx)
-{
-	if (n == 0)
-	{
-		count++;
-		return ;
-	}
-	for (int i = n; i >= 0; i -= )
-}
-
-int	main(void)
-{
-	int	n, k;
-	int	*arr;
-
-	scanf("%d %d", &n, &k);
-	arr = malloc(sizeof(int) * (n + 1));
-	for (int i = 0; i < n; i++)
-		scanf("%d", &arr[i]);
-	arr[k] = 0;
-	f(n, arr, 0);
-	printf("%d\n", count);
+  scanf("%d %d", &n, &k);
+  for (i = 0; i < n; ++i)
+    scanf("%d", &arr[i]);
+  memset(dp, 0, sizeof(int) * 10001);
+  dp[0] = 1;
+  for (i = 0; i < n; ++i)
+    for (j = arr[i]; j <= k; ++j)
+      dp[j] += dp[j - arr[i]];
+  printf("%d", dp[k]);
+  return 0;
 }
